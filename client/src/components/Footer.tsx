@@ -1,12 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, Code2, ArrowUp, ExternalLink } from "lucide-react";
+import { GitBranch, Globe, Mail, Code2, ArrowUp, ExternalLink } from "lucide-react";
 
 const SOCIAL = [
-  { icon: <Github   size={16} />, label: "GitHub",   href: "https://github.com/munna"          },
-  { icon: <Linkedin size={16} />, label: "LinkedIn",  href: "https://linkedin.com/in/munna-dev" },
-  { icon: <Mail     size={16} />, label: "Email",     href: "mailto:munna@dev.io"               },
+  { icon: <GitBranch size={16} />, label: "GitHub",      href: "https://github.com/munnamiiraz"          },
+  { icon: <Globe     size={16} />, label: "LinkedIn",    href: "https://www.linkedin.com/in/md-mahedi-hassan-58718a304/" },
+  { icon: <Code2     size={16} />, label: "Codeforces",  href: "https://codeforces.com/profile/munnamiraz"  },
+  { icon: <Mail      size={16} />, label: "Email",       href: "mailto:munnamiiraz@gmail.com"               },
 ];
 
 const NAV = [
@@ -25,7 +26,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative border-t border-white/[0.05] bg-[#0B0F19]">
+    <footer className="relative border-t border-black/5 dark:border-white/5 bg-gray-50 dark:bg-[#0B0F19] transition-colors duration-300">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent" />
 
       <div className="mx-auto max-w-7xl px-6">
@@ -43,11 +44,9 @@ export default function Footer() {
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 shadow-[0_0_12px_rgba(99,102,241,0.35)]">
                 <Code2 size={15} className="text-white" />
               </div>
-              <span className="font-mono text-sm font-bold text-white">
-                munna<span className="text-indigo-400">.dev</span>
-              </span>
+              <span className="text-indigo-600 dark:text-indigo-400">munna<span className="text-indigo-500 dark:text-indigo-400">.dev</span></span>
             </button>
-            <p className="max-w-[200px] text-xs leading-relaxed text-gray-600">
+            <p className="max-w-[200px] text-xs leading-relaxed text-gray-500 dark:text-gray-600">
               Full stack developer focused on backend systems, clean architecture, and shipping things that work.
             </p>
             <div className="flex items-center gap-2">
@@ -116,18 +115,18 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col items-center justify-between gap-3 border-t border-white/[0.04] py-5 sm:flex-row">
           <p className="text-[11px] text-gray-700">
-            © {year} Munna. Built with Next.js, TypeScript &amp; Tailwind.
+            © {year} Md. Mahedi Hassan Munna. Built with Next.js, TypeScript &amp; Tailwind.
           </p>
           <div className="flex items-center gap-4">
-            <span className="text-[11px] text-gray-700">
-              Designed &amp; developed by <span className="text-gray-500">Munna</span>
+            <span className="text-[11px] text-gray-500 dark:text-gray-700">
+              Designed &amp; developed by <span className="text-gray-700 dark:text-gray-500">MH Munna</span>
             </span>
             <button
               onClick={() => scrollTo("#home")}
               aria-label="Back to top"
-              className="group flex h-7 w-7 items-center justify-center rounded-lg border border-white/[0.07] text-gray-700 transition-all duration-200 hover:border-indigo-500/40 hover:bg-indigo-500/10 hover:text-indigo-400"
+              className="group flex h-10 w-10 items-center justify-center rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#111827] text-gray-500 dark:text-gray-400 shadow-sm transition-all duration-300 hover:border-indigo-500/50 hover:bg-indigo-500/5 hover:text-indigo-600 dark:hover:text-indigo-400 hover:shadow-indigo-500/10"
             >
-              <ArrowUp size={12} className="transition-transform duration-200 group-hover:-translate-y-0.5" />
+              <ArrowUp size={16} className="transition-transform duration-300 group-hover:-translate-y-1" />
             </button>
           </div>
         </div>

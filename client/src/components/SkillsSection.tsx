@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useRef, useState } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
+import { Sparkles, Layout, Database, Cpu, Cloud, Globe, Zap, Code2 } from "lucide-react";
 
 interface Skill {
   name: string;
@@ -12,291 +13,287 @@ interface Skill {
 interface SkillGroup {
   id: string;
   label: string;
-  color: "indigo" | "violet" | "slate" | "amber";
+  color: "indigo" | "violet" | "slate" | "amber" | "emerald";
   icon: React.ReactNode;
   description: string;
   skills: Skill[];
 }
 
-const Icons = {
-  monitor: (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8M12 17v4" />
-    </svg>
-  ),
-  server: (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <rect x="2" y="2" width="20" height="8" rx="2" /><rect x="2" y="14" width="20" height="8" rx="2" />
-      <path d="M6 6h.01M6 18h.01" />
-    </svg>
-  ),
-  tool: (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
-    </svg>
-  ),
-  cloud: (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
-    </svg>
-  ),
-};
-
 const skillGroups: SkillGroup[] = [
+  {
+    id: "overview",
+    label: "Overview",
+    color: "emerald",
+    icon: <Sparkles size={18} />,
+    description: "Multi-disciplinary developer focused on building high-performance agentic systems and scalable architectures.",
+    skills: [], // Handled specially
+  },
   {
     id: "frontend",
     label: "Frontend",
     color: "indigo",
-    icon: Icons.monitor,
-    description: "UI layer — component architecture, type safety, styling systems.",
+    icon: <Layout size={18} />,
+    description: "Crafting premium user experiences with modern frameworks and smooth interactions.",
     skills: [
-      { name: "React",        level: 88, note: "hooks, context, perf patterns" },
-      { name: "Next.js",      level: 85, note: "App Router, RSC, ISR" },
-      { name: "TypeScript",   level: 82, note: "generics, utility types" },
-      { name: "Tailwind CSS", level: 90, note: "design systems, custom config" },
+      { name: "React",        level: 88, note: "hooks, context, patterns" },
+      { name: "Next.js",      level: 85, note: "App Router, RSC" },
+      { name: "TypeScript",   level: 82, note: "Generics, Utility types" },
+      { name: "Tailwind CSS", level: 90, note: "Design systems" },
     ],
   },
   {
     id: "backend",
     label: "Backend",
     color: "violet",
-    icon: Icons.server,
-    description: "Server-side logic, data modeling, API design, and query optimization.",
+    icon: <Database size={18} />,
+    description: "Designing robust server-side logic and optimized database schemas.",
     skills: [
-      { name: "Node.js",    level: 87, note: "event loop, streams, clustering" },
-      { name: "Express",    level: 84, note: "middleware, REST, error handling" },
-      { name: "PostgreSQL", level: 80, note: "indexing, transactions, joins" },
-      { name: "MongoDB",    level: 78, note: "aggregation pipeline, schema design" },
-      { name: "Prisma",     level: 83, note: "ORM, migrations, relations" },
+      { name: "Node.js",    level: 87, note: "Event loop, streams" },
+      { name: "Express",    level: 84, note: "REST, middleware" },
+      { name: "PostgreSQL", level: 80, note: "Indexing, transactions" },
+      { name: "Prisma",     level: 83, note: "ORM, migrations" },
+      { name: "MongoDB",    level: 78, note: "Aggregations" },
     ],
   },
   {
-    id: "tools",
-    label: "Tools",
-    color: "slate",
-    icon: Icons.tool,
-    description: "Day-to-day tooling — version control and containerization.",
+    id: "ai",
+    label: "AI & Agents",
+    color: "indigo",
+    icon: <Cpu size={18} />,
+    description: "Building autonomous systems with state-of-the-art LLM orchestrators.",
     skills: [
-      { name: "Git",    level: 88, note: "branching, rebasing, workflows" },
-      { name: "Docker", level: 75, note: "images, compose, networking" },
+      { name: "GenAI / LLMs", level: 85, note: "RAG, prompt engineering" },
+      { name: "LangChain",    level: 82, note: "Chains, tools" },
+      { name: "LangGraph",    level: 78, note: "Multi-agent workflows" },
     ],
   },
   {
     id: "devops",
     label: "DevOps",
     color: "amber",
-    icon: Icons.cloud,
-    description: "Currently ramping — CI/CD pipelines and production observability.",
+    icon: <Cloud size={18} />,
+    description: "Ensuring elastic scaling and reliable delivery in the cloud.",
     skills: [
-      { name: "CI/CD",      level: 65, note: "GitHub Actions, build pipelines" },
-      { name: "Prometheus", level: 58, note: "metrics, alerting, exporters" },
-      { name: "Grafana",    level: 55, note: "dashboards, data sources" },
+      { name: "AWS",         level: 75, note: "S3, EC2, CloudFront" },
+      { name: "Docker",      level: 80, note: "Containerization" },
+      { name: "CI/CD",       level: 65, note: "Automated pipelines" },
     ],
   },
 ];
 
 const colorMap = {
   indigo: {
-    border:  "hover:border-indigo-500/30",
-    iconBg:  "bg-indigo-500/10 text-indigo-400",
-    bar:     "bg-indigo-500",
-    barGlow: "shadow-[0_0_8px_rgba(99,102,241,0.5)]",
-    label:   "text-indigo-400",
-    badge:   "border-indigo-500/20 bg-indigo-500/10 text-indigo-400",
-    heading: "from-indigo-400 to-purple-400",
+    active: "bg-indigo-500/10 text-indigo-400 border-indigo-500/30",
+    bar: "bg-indigo-500",
+    glow: "shadow-[0_0_12px_rgba(99,102,241,0.4)]",
   },
   violet: {
-    border:  "hover:border-violet-500/30",
-    iconBg:  "bg-violet-500/10 text-violet-400",
-    bar:     "bg-violet-500",
-    barGlow: "shadow-[0_0_8px_rgba(139,92,246,0.5)]",
-    label:   "text-violet-400",
-    badge:   "border-violet-500/20 bg-violet-500/10 text-violet-400",
-    heading: "from-violet-400 to-purple-400",
-  },
-  slate: {
-    border:  "hover:border-slate-500/40",
-    iconBg:  "bg-slate-500/10 text-slate-400",
-    bar:     "bg-slate-400",
-    barGlow: "shadow-[0_0_8px_rgba(148,163,184,0.4)]",
-    label:   "text-slate-400",
-    badge:   "border-slate-500/20 bg-slate-500/10 text-slate-400",
-    heading: "from-slate-300 to-slate-400",
+    active: "bg-violet-500/10 text-violet-400 border-violet-500/30",
+    bar: "bg-violet-500",
+    glow: "shadow-[0_0_12px_rgba(139,92,246,0.4)]",
   },
   amber: {
-    border:  "hover:border-amber-500/30",
-    iconBg:  "bg-amber-500/10 text-amber-400",
-    bar:     "bg-amber-500",
-    barGlow: "shadow-[0_0_8px_rgba(245,158,11,0.4)]",
-    label:   "text-amber-400",
-    badge:   "border-amber-500/20 bg-amber-500/10 text-amber-400",
-    heading: "from-amber-400 to-orange-400",
+    active: "bg-amber-500/10 text-amber-400 border-amber-500/30",
+    bar: "bg-amber-500",
+    glow: "shadow-[0_0_12px_rgba(245,158,11,0.4)]",
+  },
+  emerald: {
+    active: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
+    bar: "bg-emerald-500",
+    glow: "shadow-[0_0_12px_rgba(16,185,129,0.4)]",
+  },
+  slate: {
+    active: "bg-slate-500/10 text-slate-400 border-slate-500/30",
+    bar: "bg-slate-500",
+    glow: "shadow-[0_0_12px_rgba(148,163,184,0.4)]",
   },
 };
 
-function SkillBar({ skill, color, index, inView }: {
-  skill: Skill; color: keyof typeof colorMap; index: number; inView: boolean;
-}) {
+function SkillBar({ skill, color, index }: { skill: Skill; color: keyof typeof colorMap; index: number }) {
   const c = colorMap[color];
   return (
     <div className="group">
-      <div className="mb-1.5 flex items-center justify-between">
+      <div className="mb-2 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-semibold text-gray-200">{skill.name}</span>
-          {skill.note && (
-            <span className="hidden text-[11px] text-gray-600 group-hover:text-gray-500 sm:inline">
-              — {skill.note}
-            </span>
-          )}
+          <span className="text-sm font-bold text-gray-900 dark:text-white">{skill.name}</span>
+          <span className="text-[10px] text-gray-500 dark:text-gray-600 italic opacity-0 transition-opacity group-hover:opacity-100">
+            {skill.note}
+          </span>
         </div>
-        <motion.span
-          className={`font-mono text-xs font-semibold ${c.label}`}
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.4 + index * 0.06 }}
-        >
-          {skill.level}%
-        </motion.span>
+        <span className="font-mono text-xs font-bold text-indigo-400">{skill.level}%</span>
       </div>
-      <div className="relative h-1.5 w-full overflow-hidden rounded-full bg-white/[0.06]">
+      <div className="relative h-2.5 w-full overflow-hidden rounded-full bg-black/5 dark:bg-white/5">
         <motion.div
-          className={`h-full rounded-full ${c.bar} ${c.barGlow}`}
+          className={`h-full rounded-full ${c.bar} ${c.glow}`}
           initial={{ width: 0 }}
-          animate={inView ? { width: `${skill.level}%` } : {}}
-          transition={{ duration: 1, delay: 0.3 + index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-        />
-        <motion.div
-          className="absolute inset-y-0 w-16 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-          initial={{ x: "-100%" }}
-          animate={inView ? { x: "400%" } : {}}
-          transition={{ duration: 0.9, delay: 0.5 + index * 0.08, ease: "easeOut" }}
+          whileInView={{ width: `${skill.level}%` }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: index * 0.05, ease: "easeOut" }}
         />
       </div>
     </div>
   );
 }
 
-function SkillGroupCard({ group, index }: { group: SkillGroup; index: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
-  const c = colorMap[group.color];
+function OverviewPanel() {
+  const coreStats = [
+    { label: "Frontend", value: "React / Next.js", icon: <Globe size={16} /> },
+    { label: "Backend", value: "Node.js / Express", icon: <Database size={16} /> },
+    { label: "Database", value: "PostgreSQL / Prisma", icon: <Zap size={16} /> },
+    { label: "AI & Agents", value: "LangChain / LLMs", icon: <Sparkles size={16} /> },
+  ];
 
   return (
     <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 36 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
-      className={`relative rounded-2xl border border-white/[0.06] bg-[#111827] p-6 transition-all duration-300 ${c.border} hover:shadow-[0_12px_48px_rgba(0,0,0,0.3)]`}
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -12 }}
+      className="grid gap-6 sm:grid-cols-2"
     >
-      <div className="mb-5 flex items-start justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <div className={`flex h-9 w-9 items-center justify-center rounded-xl ${c.iconBg}`}>
-            {group.icon}
+      {coreStats.map((stat, i) => (
+        <motion.div
+          key={stat.label}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: i * 0.1 }}
+          className="flex flex-col rounded-2xl border border-black/5 dark:border-white/5 bg-gray-100/50 dark:bg-black/40 p-5 transition-all hover:border-indigo-500/20 group"
+        >
+          <div className="mb-3 flex items-center gap-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400 group-hover:bg-indigo-500 group-hover:text-white transition-all">
+              {stat.icon}
+            </div>
+            <span className="text-xs font-bold uppercase tracking-wider text-gray-500">{stat.label}</span>
           </div>
-          <div>
-            <h3 className={`bg-gradient-to-r ${c.heading} bg-clip-text text-base font-bold text-transparent`}>
-              {group.label}
-            </h3>
-            <p className="mt-0.5 text-[11px] leading-snug text-gray-600">{group.description}</p>
-          </div>
-        </div>
-        {group.id === "devops" && (
-          <span className={`flex-shrink-0 rounded-full border px-2.5 py-0.5 text-[10px] font-semibold ${c.badge}`}>
-            Leveling up
-          </span>
-        )}
-      </div>
-      <div className="mb-5 h-px w-full bg-white/[0.04]" />
-      <div className="flex flex-col gap-4">
-        {group.skills.map((skill, i) => (
-          <SkillBar key={skill.name} skill={skill} color={group.color} index={i} inView={inView} />
-        ))}
-      </div>
-      <div className="mt-5 flex items-center justify-between">
-        <span className="text-[10px] text-gray-700">
-          {group.skills.length} {group.skills.length === 1 ? "skill" : "skills"}
-        </span>
-        <div className="flex gap-1">
-          {group.skills.map((s) => (
-            <div
-              key={s.name}
-              title={s.name}
-              className={`h-1 rounded-full ${c.bar} opacity-40`}
-              style={{ width: `${Math.max(s.level * 0.2, 10)}px` }}
-            />
-          ))}
-        </div>
+          <span className="text-lg font-black text-gray-900 dark:text-white">{stat.value}</span>
+        </motion.div>
+      ))}
+      <div className="sm:col-span-2 mt-2 rounded-2xl border border-white/5 bg-linear-to-r from-indigo-500/5 to-purple-500/5 p-6 border-dashed">
+        <h4 className="mb-2 text-xs font-bold uppercase tracking-widest text-indigo-400">Core Expertise</h4>
+        <p className="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
+          I specialize in building full-stack applications that leverage autonomous AI agents for complex task orchestration. From zero-downtime AWS deployments to pixel-perfect Next.js interfaces, I maintain a high standard of architectural integrity across the entire lifecycle.
+        </p>
       </div>
     </motion.div>
   );
 }
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-indigo-400">
-      <span className="h-1 w-1 rounded-full bg-indigo-400" />
-      {children}
-    </div>
-  );
-}
-
 export default function SkillsSection() {
-  const headingRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(headingRef, { once: true, margin: "-80px" });
-  const totalSkills = skillGroups.reduce((acc, g) => acc + g.skills.length, 0);
+  const [activeTab, setActiveTab] = useState(skillGroups[0].id);
+  const activeGroup = skillGroups.find((g) => g.id === activeTab)!;
 
   return (
-    <section id="skills" className="relative bg-[#0B0F19] py-28">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />
-      <div className="pointer-events-none absolute right-0 top-1/4 h-[500px] w-[500px] rounded-full bg-violet-600/5 blur-[120px]" />
-      <div className="pointer-events-none absolute bottom-1/4 left-0 h-[400px] w-[400px] rounded-full bg-indigo-600/5 blur-[100px]" />
-
-      <div className="relative z-10 mx-auto max-w-7xl px-6">
-        <motion.div
-          ref={headingRef}
-          initial={{ opacity: 0, y: 24 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-16"
-        >
-          <SectionLabel>Skills</SectionLabel>
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <h2 className="text-4xl font-black tracking-tight text-white sm:text-5xl">
-              Stack &{" "}
-              <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
-                proficiency.
-              </span>
-            </h2>
-            <div className="flex flex-wrap items-center gap-2 sm:justify-end">
-              {[
-                { label: `${totalSkills} skills tracked`, color: "text-gray-400" },
-                { label: "3 solid groups",         color: "text-green-400" },
-                { label: "1 actively learning",    color: "text-amber-400" },
-              ].map(({ label, color }) => (
-                <span key={label} className={`rounded-full border border-white/5 bg-white/[0.03] px-3 py-1 text-xs font-medium ${color}`}>
-                  {label}
-                </span>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-
-        <div className="grid gap-5 md:grid-cols-2">
-          {skillGroups.map((group, i) => (
-            <SkillGroupCard key={group.id} group={group} index={i} />
-          ))}
+    <section id="skills" className="relative bg-white dark:bg-[#0B0F19] py-10 transition-colors duration-300">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/5 to-transparent" />
+      
+      <div className="relative mx-auto max-w-7xl px-6">
+        
+        {/* Simple Header */}
+        <div className="mb-12 text-center">
+          <h2 className="text-4xl font-black tracking-tight text-gray-900 dark:text-gray-50 sm:text-5xl">
+            Technical <span className="bg-gradient-to-r from-indigo-500 via-purple-400 to-indigo-500 bg-clip-text text-transparent">Prowess.</span>
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-gray-400">
+            A comprehensive look at my technical landscape. Select a category below to view specific skill proficiencies in detail.
+          </p>
         </div>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.3 }}
-          className="mt-10 text-center text-xs text-gray-700"
-        >
-          Proficiency levels are self-assessed based on real project usage — not certifications.
-        </motion.p>
+        {/* Tab Buttons */}
+        <div className="mb-10 flex flex-wrap items-center justify-center gap-3">
+          {skillGroups.map((group) => {
+            const isActive = activeTab === group.id;
+            const c = colorMap[group.color];
+
+            return (
+              <button
+                key={group.id}
+                onClick={() => setActiveTab(group.id)}
+                className={`flex items-center gap-2.5 rounded-xl border px-6 py-3 text-sm font-bold transition-all duration-300 pointer-events-auto
+                  ${isActive 
+                    ? `${c.active} shadow-lg shadow-indigo-500/10 scale-[1.02]` 
+                    : "border-black/5 dark:border-white/5 bg-gray-50 dark:bg-white/3 text-gray-500 hover:border-indigo-500/30 hover:text-indigo-400 hover:scale-105"}`}
+              >
+                <span className={isActive ? "text-current" : "text-gray-600"}>
+                   {group.icon}
+                </span>
+                {group.label}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Content Panel */}
+        <div className="grid gap-8 lg:grid-cols-[1fr_2fr]">
+          
+          {/* Detailed Info (Left) */}
+          <div className="flex flex-col justify-center rounded-3xl border border-black/5 dark:border-white/5 bg-gray-50 dark:bg-black/20 p-8">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 10 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className={`mb-5 flex h-12 w-12 items-center justify-center rounded-2xl ${colorMap[activeGroup.color].active}`}>
+                   {activeGroup.icon}
+                </div>
+                <h3 className="mb-3 text-2xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">
+                  {activeGroup.id === 'overview' ? 'Expertise' : activeGroup.label} Domain
+                </h3>
+                <p className="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
+                  {activeGroup.description}
+                </p>
+                
+                {activeGroup.id !== 'overview' && (
+                  <div className="mt-8 flex flex-wrap gap-2">
+                    {activeGroup.skills.map(s => (
+                      <span key={s.name} className="rounded-lg border border-white/5 bg-white/[0.05] px-3 py-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                        {s.name}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                {activeGroup.id === 'overview' && (
+                  <div className="mt-8 space-y-4">
+                    <div className="flex items-center gap-3">
+                      <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                      <span className="text-[10px] font-black uppercase tracking-widest text-gray-600">Cross-Platform Specialist</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="h-1.5 w-1.5 rounded-full bg-indigo-500" />
+                      <span className="text-[10px] font-black uppercase tracking-widest text-gray-600">Agentic AI Architect</span>
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Visualization (Right) */}
+          <div className="rounded-3xl border border-black/5 dark:border-white/10 bg-gray-50 dark:bg-white/1 p-8 lg:p-12">
+            <AnimatePresence mode="wait">
+               {activeGroup.id === 'overview' ? (
+                 <OverviewPanel key="overview" />
+               ) : (
+                <motion.div
+                  key={activeTab}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                  className="grid gap-x-12 gap-y-10 sm:grid-cols-2"
+                >
+                  {activeGroup.skills.map((skill, i) => (
+                    <SkillBar key={skill.name} skill={skill} color={activeGroup.color} index={i} />
+                  ))}
+                </motion.div>
+               )}
+            </AnimatePresence>
+          </div>
+
+        </div>
+
       </div>
     </section>
   );

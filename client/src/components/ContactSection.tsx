@@ -2,26 +2,26 @@
 
 import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { Mail, Github, Linkedin, Send, CheckCircle2, ArrowUpRight, MapPin, Clock } from "lucide-react";
+import { Mail, Send, CheckCircle2, ArrowUpRight, MapPin, Clock, GitBranch, Globe } from "lucide-react";
 
 interface FormState { name: string; email: string; subject: string; message: string; }
 type SendState = "idle" | "sending" | "sent";
 
 const socialLinks = [
   {
-    icon: <Github size={18} />,
+    icon: <GitBranch size={18} />,
     label: "GitHub",
-    handle: "@munna",
-    href: "https://github.com/munna",
+    handle: "@munnamiiraz",
+    href: "https://github.com/munnamiiraz",
     desc: "Code, projects, commits",
     color: "hover:border-white/20 hover:bg-white/5",
     iconColor: "text-gray-400 group-hover:text-white",
   },
   {
-    icon: <Linkedin size={18} />,
+    icon: <Globe size={18} />,
     label: "LinkedIn",
-    handle: "munna-dev",
-    href: "https://linkedin.com/in/munna-dev",
+    handle: "md-mahedi-hassan",
+    href: "https://www.linkedin.com/in/md-mahedi-hassan-58718a304/",
     desc: "Professional profile",
     color: "hover:border-blue-500/30 hover:bg-blue-500/5",
     iconColor: "text-gray-400 group-hover:text-blue-400",
@@ -29,8 +29,8 @@ const socialLinks = [
   {
     icon: <Mail size={18} />,
     label: "Email",
-    handle: "munna@dev.io",
-    href: "mailto:munna@dev.io",
+    handle: "munnamiiraz@gmail.com",
+    href: "mailto:munnamiiraz@gmail.com",
     desc: "Best for project inquiries",
     color: "hover:border-indigo-500/30 hover:bg-indigo-500/5",
     iconColor: "text-gray-400 group-hover:text-indigo-400",
@@ -69,21 +69,50 @@ export default function ContactSection() {
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = (e: React.MouseEvent) => {
+  const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (!validate()) return;
+    
     setSendState("sending");
-    setTimeout(() => {
-      setSendState("sent");
-      setForm({ name: "", email: "", subject: "", message: "" });
-    }, 1400);
+
+    try {
+      // Get your free access key at: https://web3forms.com/
+      const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "2e0b18c9-1e38-48e9-9a6c-5ffc59879d13"; 
+      
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: accessKey,
+          name: form.name,
+          email: form.email,
+          subject: `Portfolio Inquiry: ${form.subject}`,
+          message: form.message,
+          from_name: "Portfolio Contact Form",
+        }),
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        setSendState("sent");
+        setForm({ name: "", email: "", subject: "", message: "" });
+      } else {
+        console.error("Form submission failed:", result);
+        setSendState("idle");
+        alert("Something went wrong. Please try again or use direct email.");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setSendState("idle");
+      alert("Network error. Please check your connection.");
+    }
   };
 
   const field =
-    "w-full rounded-xl border border-white/[0.07] bg-white/[0.03] px-4 py-3 text-sm text-gray-200 placeholder-gray-600 outline-none transition-all duration-200 focus:border-indigo-500/50 focus:bg-white/[0.05] focus:ring-0";
+    "w-full rounded-xl border border-black/10 dark:border-white/7 bg-white dark:bg-white/3 px-4 py-3 text-sm text-gray-900 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-600 outline-none transition-all duration-200 focus:border-indigo-500/50 focus:bg-white/5 focus:ring-0";
 
   return (
-    <section id="contact" className="relative bg-[#0B0F19] py-28">
+    <section id="contact" className="relative bg-white dark:bg-[#0B0F19] py-12 transition-colors duration-300">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />
       <div className="pointer-events-none absolute left-1/2 top-0 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-indigo-600/5 blur-[120px]" />
 
@@ -98,7 +127,7 @@ export default function ContactSection() {
           className="mb-16 text-center"
         >
           <SectionLabel>Contact</SectionLabel>
-          <h2 className="mt-2 text-4xl font-black tracking-tight text-white sm:text-5xl">
+          <h2 className="mt-2 text-4xl font-black tracking-tight text-gray-900 dark:text-white sm:text-5xl">
             Let's{" "}
             <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">
               work together.
@@ -121,7 +150,7 @@ export default function ContactSection() {
             className="flex flex-col gap-5"
           >
             {/* Availability card */}
-            <div className="rounded-2xl border border-green-500/20 bg-[#111827] p-5">
+            <div className="rounded-2xl border border-green-500/20 bg-gray-50 dark:bg-[#111827] p-5">
               <div className="mb-4 flex items-center gap-2">
                 <span className="relative flex h-2.5 w-2.5">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-60" />
@@ -157,9 +186,9 @@ export default function ContactSection() {
                   initial={{ opacity: 0, x: -16 }}
                   animate={leftIn ? { opacity: 1, x: 0 } : {}}
                   transition={{ duration: 0.45, delay: 0.15 + i * 0.08 }}
-                  className={`group flex items-center gap-4 rounded-xl border border-white/[0.06] bg-[#111827] p-4 transition-all duration-200 no-underline ${s.color}`}
+                  className={`group flex items-center gap-4 rounded-xl border border-black/5 dark:border-white/6 bg-gray-50 dark:bg-[#111827] p-4 transition-all duration-200 no-underline ${s.color}`}
                 >
-                  <div className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-white/[0.06] transition-colors duration-200 ${s.iconColor}`}>
+                  <div className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-white/6 transition-colors duration-200 ${s.iconColor}`}>
                     {s.icon}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -172,7 +201,7 @@ export default function ContactSection() {
             </div>
 
             {/* Note */}
-            <div className="rounded-xl border border-white/[0.04] bg-white/[0.01] p-4">
+            <div className="rounded-xl border border-white/4 bg-white/1 p-4">
               <p className="text-xs leading-relaxed text-gray-600">
                 For freelance work, share a brief project description upfront — it saves a round-trip and
                 helps me give a more accurate response.
@@ -186,7 +215,7 @@ export default function ContactSection() {
             initial={{ opacity: 0, x: 24 }}
             animate={formIn ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.65, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
-            className="rounded-2xl border border-white/[0.06] bg-[#111827] p-7"
+            className="rounded-2xl border border-black/5 dark:border-white/6 bg-gray-50 dark:bg-[#111827] p-7"
           >
             {sendState === "sent" ? (
               <motion.div
@@ -299,7 +328,7 @@ export default function ContactSection() {
                 </button>
 
                 <p className="text-center text-[11px] text-gray-700">
-                  No backend — this is a UI demo. Use email or LinkedIn for real outreach.
+                  Secure transmission enabled via Web3Forms API.
                 </p>
               </div>
             )}

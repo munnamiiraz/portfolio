@@ -11,6 +11,7 @@ import {
   ArrowUpRight,
   CheckCircle2,
   Clock,
+  Cpu,
 } from "lucide-react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -34,8 +35,8 @@ const focusAreas: FocusCard[] = [
     icon: <Trophy size={18} />,
     title: "Algorithms & Problem Solving",
     description:
-      "80+ rated contests on Codeforces. Strong grasp of graph algorithms, dynamic programming, and data structures — skills that translate directly into clean production code.",
-    tags: ["Codeforces", "DSA", "Graph Theory", "DP"],
+      "80+ rated contests on Codeforces. Participated in 6 Inter-University Programming Contests (IUPC) with my team, consistently achieving decent ranks. Strong grasp of deep algorithmic patterns.",
+    tags: ["Codeforces", "IUPC", "DSA", "Team Lead"],
     status: "solid",
   },
   {
@@ -55,11 +56,19 @@ const focusAreas: FocusCard[] = [
     status: "solid",
   },
   {
+    icon: <Cpu size={18} />,
+    title: "Generative AI & Agents",
+    description:
+      "Developing agentic systems using LLMs, LangChain, and LangGraph. Building RAG pipelines and autonomous AI agents that handle complex, multi-step tasks instead of simple chat prompts.",
+    tags: ["LLMs", "LangChain", "LangGraph", "AI Agents"],
+    status: "solid",
+  },
+  {
     icon: <Container size={18} />,
     title: "DevOps & Infrastructure",
     description:
-      "Actively learning. Comfortable with Docker and basic CI/CD pipelines. Exploring observability — Prometheus and Grafana for monitoring production systems.",
-    tags: ["Docker", "CI/CD", "Prometheus", "Grafana"],
+      "Comfortable with AWS (S3, EC2, CloudFront, IAM). Actively learning infrastructure as code and containerization with Docker. Exploring observability with Prometheus and Grafana for monitoring.",
+    tags: ["AWS", "Docker", "CI/CD", "Prometheus"],
     status: "learning",
   },
 ];
@@ -72,27 +81,18 @@ const timeline: TimelineItem[] = [
   },
   {
     year: "2023",
-    title: "Built first production-grade app",
-    detail:
-      "Shipped a full-stack SaaS project with auth, payments integration, and a real user base.",
-  },
-  {
-    year: "2023",
-    title: "Selected — Top 100 / 1300",
-    detail:
-      "Placed in the top 8% of a competitive developer placement program based on DSA + system design.",
+    title: "Inter-University Contests",
+    detail: "Participated in 6 IUPCs across Bangladesh with my team, securing decent rankings and mastering collaborative DSA architecture.",
   },
   {
     year: "2024",
-    title: "Shifted focus to backend depth",
-    detail:
-      "Started studying distributed systems, database internals, and API performance at scale.",
+    title: "Built first production-grade app",
+    detail: "Shipped a full-stack SaaS project with auth, payments integration, and a real user base.",
   },
   {
     year: "2025",
-    title: "Expanding into DevOps",
-    detail:
-      "Containerizing projects with Docker, building CI/CD pipelines, and learning production monitoring.",
+    title: "Deep Dive into LLMs & Agents",
+    detail: "Building autonomous agents with LangChain and LangGraph, focusing on stateful AI workflows and RAG.",
   },
 ];
 
@@ -116,7 +116,7 @@ function FocusAreaCard({ card, index }: { card: FocusCard; index: number }) {
       initial={{ opacity: 0, y: 32 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.55, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative rounded-2xl border border-white/5 bg-[#111827] p-5 transition-all duration-300 hover:border-indigo-500/25 hover:shadow-[0_8px_40px_rgba(99,102,241,0.08)]"
+      className="group relative rounded-2xl border border-black/5 dark:border-white/5 bg-gray-50 dark:bg-[#111827] p-5 transition-all duration-300 hover:border-indigo-500/25 hover:shadow-[0_8px_40px_rgba(99,102,241,0.08)]"
     >
       {/* Status indicator */}
       <div className="absolute right-4 top-4">
@@ -144,7 +144,7 @@ function FocusAreaCard({ card, index }: { card: FocusCard; index: number }) {
         {card.icon}
       </div>
 
-      <h3 className="mb-2 text-sm font-semibold text-white">{card.title}</h3>
+      <h3 className="mb-2 text-sm font-semibold text-gray-900 dark:text-white">{card.title}</h3>
       <p className="mb-4 text-sm leading-relaxed text-gray-500">{card.description}</p>
 
       {/* Tags */}
@@ -176,7 +176,7 @@ function TimelineRow({ item, index }: { item: TimelineItem; index: number }) {
     >
       {/* Line + dot */}
       <div className="relative flex flex-col items-center">
-        <div className="z-10 mt-1 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border border-indigo-500/40 bg-[#0B0F19] transition-colors duration-200 group-hover:border-indigo-400 group-hover:bg-indigo-500/10">
+        <div className="z-10 mt-1 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border border-indigo-500/40 bg-white dark:bg-[#0B0F19] transition-colors duration-200 group-hover:border-indigo-400 group-hover:bg-indigo-500/10">
           <span className="h-1.5 w-1.5 rounded-full bg-indigo-400" />
         </div>
         <div className="mt-1.5 w-px flex-1 bg-gradient-to-b from-indigo-500/20 to-transparent" />
@@ -197,7 +197,7 @@ export default function AboutSection() {
   const headingInView = useInView(headingRef, { once: true, margin: "-80px" });
 
   return (
-    <section id="about" className="relative bg-[#0B0F19] py-28">
+    <section id="about" className="relative bg-white dark:bg-[#0B0F19] py-10 transition-colors duration-300">
       {/* Subtle top border */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />
 
@@ -213,7 +213,7 @@ export default function AboutSection() {
         >
           <SectionLabel>About</SectionLabel>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <h2 className="max-w-xl text-4xl font-black tracking-tight text-white sm:text-5xl">
+            <h2 className="max-w-xl text-4xl font-black tracking-tight text-gray-900 dark:text-white sm:text-5xl">
               The background,{" "}
               <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
                 unfiltered.
@@ -295,8 +295,8 @@ export default function AboutSection() {
               className="grid grid-cols-2 gap-3"
             >
               {[
-                { value: "80+", label: "CF contests", color: "text-indigo-400" },
-                { value: "Top 8%", label: "Placement rank", color: "text-green-400" },
+                { value: "100+", label: "Contests", color: "text-indigo-400" },
+                { value: "1500+", label: "Solved", color: "text-green-400" },
                 { value: "15+", label: "Projects shipped", color: "text-purple-400" },
                 { value: "2 yrs", label: "In the craft", color: "text-amber-400" },
               ].map(({ value, label, color }) => (

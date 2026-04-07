@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { ArrowRight, Mail, Github, ExternalLink, Terminal, Cpu, Layers, Zap } from "lucide-react";
+import { ArrowRight, Mail, GitBranch, Globe, ExternalLink, Terminal, Cpu, Layers, Zap, Code2 } from "lucide-react";
 import Image from "next/image";
+import avatar from "../public/Gemini_Generated_Image_stligjstligjstli.png";
 
 // ─── Floating Badge ───────────────────────────────────────────────────────────
 interface FloatingBadgeProps {
@@ -16,7 +17,7 @@ interface FloatingBadgeProps {
 function FloatingBadge({ icon, label, style, delay }: FloatingBadgeProps) {
   return (
     <motion.div
-      className="absolute flex items-center gap-1.5 rounded-xl border border-white/10 bg-[#111827]/80 px-3 py-1.5 text-xs font-medium text-gray-300 shadow-lg backdrop-blur-sm"
+      className="absolute z-30 flex items-center gap-1.5 rounded-xl border border-white/10 bg-[#111827]/80 px-3 py-1.5 text-xs font-medium text-gray-300 shadow-lg backdrop-blur-sm"
       style={style}
       initial={{ opacity: 0, scale: 0.6 }}
       animate={{ opacity: 1, scale: 1 }}
@@ -88,12 +89,12 @@ function StatCounter({ value, suffix, label }: { value: number; suffix: string; 
   }, [started, value]);
 
   return (
-    <div ref={ref} className="text-center">
-      <div className="text-2xl font-bold text-white">
+    <div ref={ref} className="group flex flex-col items-center">
+      <div className="text-2xl font-black tracking-tighter text-gray-900 dark:text-white transition-transform duration-300 group-hover:scale-110">
         {count}
-        <span className="text-indigo-400">{suffix}</span>
+        <span className="text-indigo-500 font-bold">{suffix}</span>
       </div>
-      <div className="mt-0.5 text-xs text-gray-500">{label}</div>
+      <div className="mt-1 text-[10px] font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 opacity-80">{label}</div>
     </div>
   );
 }
@@ -149,26 +150,14 @@ export default function HeroSection() {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 28 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
   };
 
   return (
     <section
       id="home"
-      className="relative flex min-h-screen items-center overflow-hidden bg-[#0B0F19]"
+      className="relative flex min-h-[85vh] items-center overflow-hidden bg-white dark:bg-[#0B0F19] transition-colors duration-300"
     >
-      {/* ── Background Grid ── */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px)
-          `,
-          backgroundSize: "60px 60px",
-        }}
-      />
-
       {/* ── Radial Glow ── */}
       <div className="pointer-events-none absolute left-1/4 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-indigo-600/10 blur-[120px]" />
       <div className="pointer-events-none absolute right-1/4 top-1/3 h-[400px] w-[400px] rounded-full bg-green-500/6 blur-[100px]" />
@@ -181,12 +170,12 @@ export default function HeroSection() {
         }}
       />
 
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-24 lg:py-0">
-        <div className="flex flex-col items-center gap-16 lg:flex-row lg:items-center lg:gap-12">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-12 lg:py-20">
+        <div className="flex flex-col items-center justify-between gap-12 lg:flex-row">
 
           {/* ── LEFT COLUMN ── */}
           <motion.div
-            className="flex-1 text-center lg:text-left"
+            className="w-full max-w-2xl text-center lg:text-left"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
@@ -200,19 +189,18 @@ export default function HeroSection() {
               Available for remote opportunities
             </motion.div>
 
-            {/* Name */}
             <motion.div variants={itemVariants}>
-              <h1 className="text-5xl font-black tracking-tight text-white sm:text-6xl lg:text-7xl">
-                Hi, I'm{" "}
-                <span className="relative inline-block">
+              <h1 className="text-3xl font-black leading-[1.1] tracking-tight text-gray-900 dark:text-white sm:text-5xl lg:text-6xl">
+                <span className="block text-gray-400 text-lg sm:text-xl lg:text-2xl font-bold mb-2">Hello, I'm</span>
+                <span className="block">Md. Mahedi Hassan</span>
+                <span className="relative mt-2 inline-block">
                   <span
-                    className="bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent"
-                    style={{ backgroundSize: "200% auto", animation: "shimmer 4s linear infinite" }}
+                    className="bg-gradient-to-r from-indigo-500 via-purple-400 to-indigo-500 bg-size-[200%_auto] bg-clip-text text-transparent animate-shimmer"
                   >
                     Munna
                   </span>
                   <motion.span
-                    className="absolute -bottom-1 left-0 h-[3px] w-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"
+                    className="absolute -bottom-1.5 left-0 h-[3px] w-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"
                     initial={{ scaleX: 0 }}
                     animate={{ scaleX: 1 }}
                     transition={{ delay: 1, duration: 0.8, ease: "easeOut" }}
@@ -225,7 +213,7 @@ export default function HeroSection() {
             {/* Typewriter Role */}
             <motion.div variants={itemVariants} className="mt-4 flex items-center justify-center gap-2 lg:justify-start">
               <Terminal size={16} className="text-indigo-400" />
-              <span className="font-mono text-xl font-semibold text-gray-300 sm:text-2xl">
+              <span className="font-mono text-xl font-semibold text-gray-700 dark:text-gray-300 sm:text-2xl">
                 {role}
                 <motion.span
                   animate={{ opacity: [1, 0] }}
@@ -238,10 +226,10 @@ export default function HeroSection() {
             {/* Tagline */}
             <motion.p
               variants={itemVariants}
-              className="mt-6 max-w-lg text-base leading-relaxed text-gray-400 sm:text-lg lg:mx-0 mx-auto"
+              className="mt-6 max-w-lg text-base leading-relaxed text-gray-600 dark:text-gray-400 sm:text-lg lg:mx-0 mx-auto"
             >
               I build{" "}
-              <span className="text-white font-medium">scalable web applications</span>{" "}
+              <span className="text-gray-900 dark:text-white font-medium">scalable web applications</span>{" "}
               with clean architecture and real-world performance in mind — from database design to deployment pipelines.
             </motion.p>
 
@@ -258,7 +246,7 @@ export default function HeroSection() {
               </MagneticButton>
 
               <MagneticButton
-                className="group inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-gray-300 backdrop-blur-sm transition-all duration-300 hover:border-indigo-500/50 hover:bg-white/10 hover:text-white"
+                className="group inline-flex items-center gap-2 rounded-xl border border-black/10 dark:border-white/10 bg-gray-50 dark:bg-white/5 px-6 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300 backdrop-blur-sm transition-all duration-300 hover:border-indigo-500/50 hover:bg-black/5 dark:hover:bg-white/10 hover:text-black dark:hover:text-white"
               >
                 <Mail size={15} />
                 Contact Me
@@ -268,41 +256,46 @@ export default function HeroSection() {
             {/* Social Links */}
             <motion.div variants={itemVariants} className="mt-6 flex items-center justify-center gap-4 lg:justify-start">
               {[
-                { icon: <Github size={18} />, label: "GitHub", href: "#" },
-                { icon: <ExternalLink size={18} />, label: "LinkedIn", href: "#" },
+                { icon: <GitBranch size={18} />, label: "GitHub", href: "https://github.com/munnamiiraz" },
+                { icon: <Globe size={18} />, label: "LinkedIn", href: "https://www.linkedin.com/in/md-mahedi-hassan-58718a304/" },
+                { icon: <Code2 size={18} />, label: "Codeforces", href: "https://codeforces.com/profile/munnamiraz" },
               ].map(({ icon, label, href }) => (
                 <a
                   key={label}
                   href={href}
-                  className="flex items-center gap-1.5 text-sm text-gray-500 transition-colors duration-200 hover:text-indigo-400"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-1.5 text-sm text-gray-500 transition-colors duration-200 hover:text-indigo-600 dark:hover:text-indigo-400"
                 >
                   {icon}
                   <span>{label}</span>
                 </a>
               ))}
-              <span className="h-4 w-px bg-white/10" />
-              <span className="text-xs text-gray-600">munna@dev.io</span>
+              <span className="h-4 w-px bg-black/10 dark:bg-white/10" />
+              <span className="text-xs text-gray-600 dark:text-gray-500">munnamiiraz@gmail.com</span>
             </motion.div>
 
             {/* Stats Row */}
             <motion.div
               variants={itemVariants}
-              className="mt-10 inline-grid grid-cols-3 gap-6 rounded-2xl border border-white/5 bg-white/[0.02] px-6 py-4 backdrop-blur-sm"
+              className="mt-10 grid grid-cols-2 gap-4 rounded-2xl border border-black/5 dark:border-white/5 bg-black/[0.02] dark:bg-white/[0.02] p-6 backdrop-blur-sm sm:grid-cols-4 lg:max-w-xl"
             >
-              <StatCounter value={80} suffix="+" label="CF Contests" />
-              <div className="w-px bg-white/5" />
-              <StatCounter value={15} suffix="+" label="Projects Built" />
-              <div className="w-px bg-white/5" />
-              <StatCounter value={2} suffix="yr" label="Experience" />
+              <StatCounter value={100} suffix="+" label="Contests" />
+              <StatCounter value={1500} suffix="+" label="Solved" />
+              <StatCounter value={15} suffix="+" label="Projects" />
+              <StatCounter value={2} suffix="yr" label="Exp." />
             </motion.div>
           </motion.div>
+
+          {/* ── MIDDLE DECORATION ── */}
+          <div className="hidden h-96 w-px bg-linear-to-b from-transparent via-black/10 dark:via-white/10 to-transparent lg:block" />
 
           {/* ── RIGHT COLUMN ── */}
           <motion.div
             className="relative flex-shrink-0"
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.9, delay: 0.3, ease: "circOut" }}
           >
             {/* Outer Glow Ring */}
             <div className="absolute inset-0 rounded-full bg-gradient-to-br from-indigo-500/30 via-purple-500/10 to-transparent blur-2xl" />
@@ -321,9 +314,17 @@ export default function HeroSection() {
 
             {/* Profile Image Container */}
             <motion.div
-              className="relative h-72 w-72 overflow-hidden rounded-3xl border border-white/10 shadow-2xl sm:h-80 sm:w-80 lg:h-96 lg:w-96"
+              className="relative h-72 w-72 overflow-hidden rounded-full border border-black/10 dark:border-white/10 shadow-2xl sm:h-80 sm:w-80 lg:h-[400px] lg:w-[400px]"
+              animate={{ 
+                y: [0, -10, 0],
+                rotate: [0, 1, 0, -1, 0]
+              }}
+              transition={{ 
+                duration: 6, 
+                repeat: Infinity, 
+                ease: "easeInOut" 
+              }}
               whileHover={{ scale: 1.02, borderColor: "rgba(99,102,241,0.4)" }}
-              transition={{ duration: 0.3 }}
             >
               {/* Gradient overlay */}
               <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#0B0F19]/60 via-transparent to-transparent" />
@@ -337,16 +338,15 @@ export default function HeroSection() {
                 }}
               />
 
-              {/* Placeholder avatar */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <div className="h-28 w-28 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 p-0.5 shadow-xl">
-                  <div className="flex h-full w-full items-center justify-center rounded-full bg-[#1a1f35] text-4xl font-black text-white">
-                    M
-                  </div>
-                </div>
-                <p className="mt-3 text-sm font-medium text-gray-400">
-                  Replace with <code className="text-indigo-400 text-xs">/public/avatar.jpg</code>
-                </p>
+              {/* Real avatar image */}
+              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center p-0.5">
+                <Image
+                  src={avatar}
+                  alt="Munna Avatar"
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  priority
+                />
               </div>
 
               {/* Scanline effect */}
@@ -361,37 +361,28 @@ export default function HeroSection() {
             <FloatingBadge
               icon={<Layers size={12} />}
               label="Next.js"
-              style={{ top: "-12px", left: "-20px" }}
+              style={{ top: "10%", left: "-25px" }}
               delay={0.8}
             />
             <FloatingBadge
               icon={<Cpu size={12} />}
               label="Node.js"
-              style={{ top: "30%", right: "-30px" }}
+              style={{ top: "35%", right: "-35px" }}
               delay={1.0}
             />
             <FloatingBadge
               icon={<Zap size={12} />}
               label="PostgreSQL"
-              style={{ bottom: "18%", left: "-30px" }}
+              style={{ bottom: "25%", left: "-35px" }}
               delay={1.2}
             />
             <FloatingBadge
               icon={<Terminal size={12} />}
               label="Docker"
-              style={{ bottom: "-12px", right: "10%" }}
+              style={{ bottom: "5%", right: "0px" }}
               delay={1.4}
             />
 
-            {/* Codeforces badge */}
-            <motion.div
-              className="absolute -top-5 right-0 rounded-xl border border-yellow-500/20 bg-yellow-500/10 px-3 py-1.5 text-xs font-semibold text-yellow-400 shadow-lg"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.6, type: "spring" }}
-            >
-              🏆 Top 100 / 1300
-            </motion.div>
           </motion.div>
 
         </div>

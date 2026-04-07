@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import {
-  ExternalLink, Github, ArrowUpRight,
+  ExternalLink, GitBranch, ArrowUpRight,
   Server, ShoppingCart, Activity,
   ChevronRight, Layers, Zap, Shield
 } from "lucide-react";
@@ -61,65 +61,65 @@ const accent = {
 // ─── Project Data ─────────────────────────────────────────────────────────────
 const projects: Project[] = [
   {
-    id: "logpulse",
-    tag: "SaaS / Analytics",
-    title: "LogPulse",
-    tagline: "Multi-tenant log analytics platform with real-time alerting.",
+    id: "launchforge",
+    tag: "SaaS / Waitlist",
+    title: "LaunchForge",
+    tagline: "High-performance waitlist automation for modern SaaS launches.",
     problem:
-      "Small engineering teams running on AWS/VPS had no affordable way to centralize application logs and get notified when error rates spiked. Existing tools like Datadog start at $15/host/month — overkill for a 3-person startup.",
+      "Founders and developers need a high-conversion way to validate ideas and gather emails without spending 2 days building a custom landing page and backend tracking system.",
     built:
-      "A multi-tenant SaaS platform where teams pipe logs via a lightweight SDK or HTTP endpoint. The backend ingests, parses, and indexes log entries using PostgreSQL full-text search. Users get a dashboard with error-rate graphs, a query interface, and configurable alert rules that fire via email or webhook.",
-    stack: ["Next.js", "Node.js", "PostgreSQL", "Prisma", "Redis", "JWT", "Tailwind"],
+      "A complete full-stack solution featuring slug-based routing, real-time leaderboards, and referral tracking. The backend handles high-concurrency requests and utilizes Stripe for subscription management.",
+    stack: ["Next.js", "Node.js", "PostgreSQL", "Prisma", "Stripe", "Framer Motion", "Tailwind"],
     highlights: [
-      "Handles ~50k log entries/day per tenant on a $6 VPS",
-      "Multi-tenant isolation via row-level security in PostgreSQL",
-      "Redis pub/sub for real-time log streaming to the dashboard",
+      "Dynamic slug-based routing for custom waitlist URLs",
+      "Referral-based leaderboard system to gamify waitlist growth",
+      "Full Stripe integration for handling tiered workspace plans",
+    ],
+    icon: <Zap size={20} />,
+    accentColor: "indigo",
+    githubUrl: "https://github.com/munnamiiraz/Launch-Forge",
+    liveUrl: "https://launch-vauge.vercel.app/",
+  },
+  {
+    id: "skillbridge",
+    tag: "Marketplace / Booking",
+    title: "SkillBridge",
+    tagline: "Student-tutor marketplace with real-time session booking.",
+    problem:
+      "Students struggle to find specialized tutors for specific academic needs, and tutors lack a centralized platform to manage availability and incoming request pipelines.",
+    built:
+      "A marketplace platform with separate student and tutor dashboards. Students can browse, book, and track sessions, while tutors have full control over their availability patterns and session management.",
+    stack: ["React", "Express", "Node.js", "MongoDB", "TanStack Query", "JWT", "Tailwind"],
+    highlights: [
+      "Complex availability state management for tutors",
+      "Real-time session booking and conflict resolution",
+      "Robust client-server architecture with JWT-based auth",
+    ],
+    icon: <Layers size={20} />,
+    accentColor: "violet",
+    githubUrl: "https://github.com/munnamiiraz/SkillBridge-Client",
+    liveUrl: "https://skill-bridge-client-iota.vercel.app",
+  },
+  {
+    id: "appifylab",
+    tag: "Social / Photos",
+    title: "AppifyLab",
+    tagline: "A modern photo-centric social platform for seamless image sharing.",
+    problem:
+      "Users often face friction when trying to share high-quality photography without the bloat of traditional social networks. Existing open-source alternatives lacked a refined UI and easy photo management.",
+    built:
+      "A full-stack social media application with a clean, grid-based photo feed. It features secure user authentication, real-time image uploads, and a responsive interface that prioritizes visual content across all devices.",
+    stack: ["React", "Node.js", "Express", "MongoDB", "Cloudinary", "Tailwind", "JWT"],
+    highlights: [
+      "Optimized photo upload pipeline with real-time progress",
+      "Robust state management for social feeds and interactions",
+      "Secure cloud storage integration for heavy image assets",
     ],
     icon: <Activity size={20} />,
     accentColor: "indigo",
-    githubUrl: "https://github.com/munna/logpulse",
-    liveUrl: "https://logpulse.demo.dev",
-  },
-  {
-    id: "cartflow",
-    tag: "E-Commerce",
-    title: "CartFlow",
-    tagline: "Headless e-commerce engine with inventory and order management.",
-    problem:
-      "A local electronics retailer needed a custom storefront — Shopify was too expensive for their margins, and WooCommerce couldn't handle the inventory sync between their physical store and online orders. They were manually reconciling stock in a spreadsheet.",
-    built:
-      "A headless e-commerce system with a Next.js storefront and a separate admin panel. The backend exposes a REST API handling products, variants, inventory, orders, and discount codes. Stock is tracked in real time using database-level locking to prevent overselling. Orders flow through a status machine with email notifications at each stage.",
-    stack: ["Next.js", "Express", "MongoDB", "Stripe", "Cloudinary", "Node.js", "TypeScript"],
-    highlights: [
-      "Pessimistic locking prevents race conditions on low-stock items",
-      "Stripe webhook handler with idempotency key validation",
-      "Admin panel with bulk CSV import for 500+ product catalog",
-    ],
-    icon: <ShoppingCart size={20} />,
-    accentColor: "violet",
-    githubUrl: "https://github.com/munna/cartflow",
-    liveUrl: "https://cartflow.demo.dev",
-  },
-  {
-    id: "infrasight",
-    tag: "DevOps / Monitoring",
-    title: "InfraSight",
-    tagline: "Self-hosted infrastructure monitoring with Prometheus + Grafana.",
-    problem:
-      "A side project running on three VPS nodes had no visibility into CPU spikes, memory leaks, or disk pressure until something actually went down. Managed monitoring was either too expensive or too complex to set up for a solo project.",
-    built:
-      "A Docker Compose stack that spins up Prometheus, Grafana, Node Exporter, and a custom alert manager in under 5 minutes on any Linux VPS. Includes pre-built Grafana dashboards for system metrics, a PostgreSQL exporter for query performance, and a webhook bridge that posts alerts to Discord or Slack.",
-    stack: ["Docker", "Prometheus", "Grafana", "Node Exporter", "PostgreSQL Exporter", "Bash"],
-    highlights: [
-      "One-command deploy: docker compose up -d on a fresh VPS",
-      "Pre-configured alert rules for CPU >85%, disk >90%, OOM events",
-      "Custom PostgreSQL dashboard tracking slow queries and lock waits",
-    ],
-    icon: <Server size={20} />,
-    accentColor: "emerald",
-    githubUrl: "https://github.com/munna/infrasight",
-    liveUrl: "https://infrasight.demo.dev",
-  },
+    githubUrl: "https://github.com/munnamiiraz/AppifyLabDemo",
+    liveUrl: "https://appifylabdemo-frontend.onrender.com/",
+  }
 ];
 
 // ─── Section Label ────────────────────────────────────────────────────────────
@@ -145,34 +145,34 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       initial={{ opacity: 0, y: 40 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.65, delay: index * 0.12, ease: [0.22, 1, 0.36, 1] }}
-      className={`group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-[#111827] transition-all duration-500 ${c.border}`}
+      className={`group relative overflow-hidden rounded-2xl border border-black/5 dark:border-white/6 bg-gray-50 dark:bg-[#111827] transition-all duration-500 ${c.border}`}
     >
       {/* Ambient gradient top-left */}
       <div className={`pointer-events-none absolute -left-10 -top-10 h-48 w-48 rounded-full bg-gradient-to-br ${c.grad} blur-2xl`} />
 
       {/* Large ghost number */}
-      <div className={`pointer-events-none absolute right-6 top-4 font-black ${c.number} select-none`}
-        style={{ fontSize: "clamp(4rem,8vw,6rem)", lineHeight: 1, fontFamily: "system-ui" }}>
+      <div className={`pointer-events-none absolute -bottom-1 -right-1 font-black ${c.number} select-none opacity-50`}
+        style={{ fontSize: "clamp(5rem,10vw,7rem)", lineHeight: 0.8, fontFamily: "system-ui" }}>
         {String(index + 1).padStart(2, "0")}
       </div>
 
       <div className="relative z-10 p-7">
         {/* Top row */}
-        <div className="mb-5 flex items-start justify-between gap-4">
-          <div className="flex items-center gap-3">
+        <div className="mb-6 flex items-start justify-between gap-2 overflow-hidden">
+          <div className="flex flex-1 items-center gap-3 overflow-hidden">
             <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl ${c.iconWrap}`}>
               {project.icon}
             </div>
-            <div>
-              <span className={`inline-block rounded-full border px-2.5 py-0.5 text-[10px] font-semibold ${c.tag}`}>
+            <div className="min-w-0 flex-1">
+              <span className={`inline-block rounded-full border px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-tight ${c.tag}`}>
                 {project.tag}
               </span>
-              <h3 className="mt-1 text-xl font-black tracking-tight text-white">{project.title}</h3>
+              <h3 className="mt-1.5 truncate text-xl font-black tracking-tighter text-gray-900 dark:text-white">{project.title}</h3>
             </div>
           </div>
 
-          {/* Links */}
-          <div className="flex flex-shrink-0 items-center gap-2">
+          {/* Links - Higher Z and Background to prevent ghost overlap if it reaches here */}
+          <div className="relative z-20 flex flex-shrink-0 items-center gap-2.5">
             <a
               href={project.githubUrl}
               target="_blank"
@@ -180,7 +180,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               className={`flex h-8 w-8 items-center justify-center rounded-lg border transition-all duration-200 ${c.btn}`}
               aria-label="GitHub"
             >
-              <Github size={13} />
+              <GitBranch size={13} />
             </a>
             <a
               href={project.liveUrl}
@@ -195,7 +195,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         </div>
 
         {/* Tagline */}
-        <p className="mb-4 text-sm font-medium leading-relaxed text-gray-300">{project.tagline}</p>
+        <p className="mb-4 text-sm font-medium leading-relaxed text-gray-700 dark:text-gray-300">{project.tagline}</p>
 
         {/* Divider */}
         <div className="mb-4 h-px bg-white/[0.05]" />
@@ -257,7 +257,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           </div>
           <ul className="space-y-1.5">
             {project.highlights.map((h) => (
-              <li key={h} className="flex items-start gap-2 text-xs leading-relaxed text-gray-500">
+              <li key={h} className="flex items-start gap-2 text-xs leading-relaxed text-gray-700 dark:text-gray-500">
                 <span className={`mt-1.5 h-1 w-1 flex-shrink-0 rounded-full ${c.bar}`} />
                 {h}
               </li>
@@ -270,7 +270,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           {project.stack.map((tech) => (
             <span
               key={tech}
-              className="rounded-md border border-white/[0.06] bg-white/[0.03] px-2 py-0.5 font-mono text-[11px] text-gray-500 transition-colors duration-150 hover:text-gray-300"
+              className="rounded-md border border-black/5 dark:border-white/6 bg-black/3 dark:bg-white/3 px-2 py-0.5 font-mono text-[11px] text-gray-600 dark:text-gray-500 transition-colors duration-150 hover:text-gray-900 dark:hover:text-gray-300"
             >
               {tech}
             </span>
@@ -283,13 +283,13 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             href={project.githubUrl}
             target="_blank"
             rel="noreferrer"
-            className="group/link flex items-center gap-1.5 text-xs font-semibold text-gray-500 transition-colors duration-200 hover:text-white"
+            className="group/link flex items-center gap-1.5 text-xs font-semibold text-gray-600 dark:text-gray-500 transition-colors duration-200 hover:text-gray-900 dark:hover:text-white"
           >
-            <Github size={13} />
+            <GitBranch size={13} />
             View source
             <ArrowUpRight size={11} className="transition-transform duration-150 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5" />
           </a>
-          <span className="h-3 w-px bg-white/10" />
+          <span className="h-3 w-px bg-black/10 dark:bg-white/10" />
           <a
             href={project.liveUrl}
             target="_blank"
@@ -312,7 +312,7 @@ export default function ProjectsSection() {
   const inView = useInView(headingRef, { once: true, margin: "-80px" });
 
   return (
-    <section id="projects" className="relative bg-[#0B0F19] py-28">
+    <section id="projects" className="relative bg-white dark:bg-[#0B0F19] py-14 transition-colors duration-300">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />
 
       {/* Glows */}
@@ -331,7 +331,7 @@ export default function ProjectsSection() {
         >
           <SectionLabel>Projects</SectionLabel>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <h2 className="max-w-lg text-4xl font-black tracking-tight text-white sm:text-5xl">
+            <h2 className="max-w-lg text-4xl font-black tracking-tight text-gray-900 dark:text-white sm:text-5xl">
               Things I've{" "}
               <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">
                 actually shipped.
@@ -362,12 +362,12 @@ export default function ProjectsSection() {
           <span className="text-xs text-gray-700">
             More on{" "}
             <a
-              href="https://github.com/munna"
+              href="https://github.com/munnamiiraz"
               target="_blank"
               rel="noreferrer"
               className="text-gray-500 underline underline-offset-2 transition-colors hover:text-gray-300"
             >
-              github.com/munna
+              github.com/munnamiiraz
             </a>
           </span>
           <div className="h-px w-16 bg-gradient-to-l from-transparent to-white/10" />
